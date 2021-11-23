@@ -9,7 +9,6 @@ export default class Category extends Component {
     };
 
     this.getCategory = this.getCategory.bind(this);
-    this.handleButtonCategory = this.handleButtonCategory.bind(this);
   }
 
   componentDidMount() {
@@ -39,7 +38,6 @@ export default class Category extends Component {
                   data-testid="category"
                   type="button"
                   name="button-category"
-                  onClick={ () => this.handleButtonCategory(category) }
                 >
                   { category.name }
                 </button>
