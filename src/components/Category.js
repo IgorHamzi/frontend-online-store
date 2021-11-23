@@ -1,25 +1,28 @@
 import React, { Component } from 'react';
-import { getCategories } from '../services/api';
+import { getCategories, getProductsFromCategoryAndQuery } from '../services/api';
+// import CategoryList from './CategoryList';
+import ProductList from './ProductList';
 
 export default class Category extends Component {
   constructor() {
     super();
     this.state = {
       categories: [],
+      listCat: [],
     };
 
     this.getCategory = this.getCategory.bind(this);
+    this.handleButtonCategory = this.handleButtonCategory.bind(this);
   }
 
   componentDidMount() {
     this.getCategory();
   }
 
-  /*   async handleButtonCategory(category) {
+  async handleButtonCategory(category) {
     const catProduct = await getProductsFromCategoryAndQuery('', category.name);
-    this.setState({ listCategory: catProduct, categoryOn: true });
-    return console.log(catProduct);
-  } */
+    this.setState({ listCat: catProduct.results });
+  }
 
   async getCategory() {
     const requestCategory = await getCategories();
@@ -27,7 +30,7 @@ export default class Category extends Component {
   }
 
   render() {
-    const { categories } = this.state;
+    const { categories, listCat } = this.state;
     return (
       <div>
         <form>
@@ -38,6 +41,7 @@ export default class Category extends Component {
                   data-testid="category"
                   type="button"
                   name="button-category"
+                  onClick={ () => this.handleButtonCategory(category) }
                 >
                   { category.name }
                 </button>
@@ -45,6 +49,7 @@ export default class Category extends Component {
             ))}
           </ol>
         </form>
+        <ProductList listCat={ listCat } />
       </div>
     );
   }
