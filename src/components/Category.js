@@ -9,11 +9,18 @@ export default class Category extends Component {
     };
 
     this.getCategory = this.getCategory.bind(this);
+    this.handleButtonCategory = this.handleButtonCategory.bind(this);
   }
 
   componentDidMount() {
     this.getCategory();
   }
+
+  /*   async handleButtonCategory(category) {
+    const catProduct = await getProductsFromCategoryAndQuery('', category.name);
+    this.setState({ listCategory: catProduct, categoryOn: true });
+    return console.log(catProduct);
+  } */
 
   async getCategory() {
     const requestCategory = await getCategories();
@@ -26,10 +33,15 @@ export default class Category extends Component {
       <div>
         <form>
           <ol>
-            {categories.map(({ id, name }) => (
-              <li key={ id }>
-                <button data-testid="category" type="button">
-                  { name }
+            {categories.map((category) => (
+              <li key={ category.id }>
+                <button
+                  data-testid="category"
+                  type="button"
+                  name="button-category"
+                  onClick={ () => this.handleButtonCategory(category) }
+                >
+                  { category.name }
                 </button>
               </li>
             ))}
