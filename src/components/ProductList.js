@@ -12,13 +12,18 @@ export default class ProductList extends Component {
           {products.length ? products.map(({ price, title, thumbnail, id }) => (
             <div data-testid="product" key={ id }>
               <h2>{title}</h2>
-              <Link to="/product">
-                <img src={ thumbnail } alt={ title } />
+              <Link to={ `/product/${id}` }>
+                <img
+                  src={ thumbnail }
+                  alt={ title }
+                  data-testid="product-detail-link"
+                />
               </Link>
               <p>{price}</p>
             </div>
           )) : 'Nenhum produto foi encontrado'}
         </div>
+        {console.log(listProduct)}
       </div>
     );
   }
