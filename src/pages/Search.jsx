@@ -17,10 +17,6 @@ export default class Search extends Component {
     this.getProduct = this.getProduct.bind(this);
   }
 
-  componentDidMount() {
-    this.getProduct();
-  }
-
   handleChange({ target: { name, value } }) {
     this.setState({
       [name]: value,
@@ -31,7 +27,6 @@ export default class Search extends Component {
     const { product } = this.state;
     const requestProduct = await getProductsFromCategoryAndQuery('', product);
     this.setState({ listProduct: requestProduct.results });
-    console.log(requestProduct);
   }
 
   preventDefaultForm = (event) => {
