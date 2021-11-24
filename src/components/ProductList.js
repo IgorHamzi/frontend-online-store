@@ -6,10 +6,6 @@ export default class ProductList extends Component {
   constructor(props) {
     super(props);
 
-    this.state = {
-      productStore: '',
-    };
-
     this.addCart = this.addCart.bind(this);
   }
 
@@ -19,8 +15,7 @@ export default class ProductList extends Component {
     const productCart = allProducts.find((product) => (
       product.id === name
     ));
-    this.setState({ productStore: [...productStore, productCart] });
-    localStorage.setItem('product', JSON.stringify([...productStore, productCart]));
+    localStorage.setItem('product', JSON.stringify(productCart));
   }
 
   render() {
