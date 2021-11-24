@@ -8,8 +8,6 @@ export default class Product extends Component {
     this.state = {
       productDetails: [],
     };
-
-    // this.getProductDetails = this.getProductDetails.bind(this);
   }
 
   componentDidMount() {
@@ -19,8 +17,7 @@ export default class Product extends Component {
   getProductDetails = async () => {
     const { match: { params: { id } } } = this.props;
     const productApi = await fetch(`https://api.mercadolibre.com/items/${id}`);
-    const responseProduct = productApi.json();
-    console.log(responseProduct);
+    const responseProduct = await productApi.json();
     this.setState({
       productDetails: responseProduct,
     });
@@ -30,7 +27,11 @@ export default class Product extends Component {
     const { productDetails } = this.state;
     return (
       <div>
+        <h1 data-testid="product-detail-name">
+          { productDetails.title }
+        </h1>
         <img src={ productDetails.thumbnail } alt={ productDetails.title } />
+        <p>{ `R$${productDetails.price}` }</p>
       </div>
     );
   }
