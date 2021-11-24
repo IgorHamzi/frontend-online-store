@@ -13,7 +13,7 @@ export default class Cart extends Component {
 
   componentDidMount() {
     const { saveState } = this;
-    if (localStorage.getItem('product').length > 0) {
+    if (localStorage.getItem('product') !== null) {
       const getProduct = JSON.parse(localStorage.getItem('product'));
       saveState(getProduct);
     }
@@ -28,18 +28,26 @@ export default class Cart extends Component {
 
     return (
       <div>
-        <h1 data-testid="shopping-cart-empty-message">Seu carrinho está vazio</h1>
-        <div>
-          {[listProduct].map(({ id, title, thumbnail, price }) => (
-            <div key={ id }>
-              <h1 data-testid="product-detail-name">
-                { title }
-              </h1>
-              <img src={ thumbnail } alt={ title } />
-              <p>{ `R$${price}` }</p>
-            </div>
-          ))}
-        </div>
+        <p>
+          {`Itens: ${listProduct.length}` }
+        </p>
+        {listProduct.length ? (
+          <div>
+            {listProduct.map((product) => (
+              <div key={ product.id }>
+                <h1 data-testid="shopping-cart-product-name">
+                  { product.title }
+                </h1>
+                <img src={ product.thumbnail } alt={ product.title } />
+                <p>{ `R$${product.price}` }</p>
+                <p data-testid="shopping-cart-product-quantity">
+                  1
+                </p>
+              </div>
+            ))}
+          </div>
+        ) : (
+          <h1 data-testid="shopping-cart-empty-message">Seu carrinho está vazio</h1>)}
       </div>
     );
   }
