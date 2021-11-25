@@ -3,6 +3,25 @@ import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 
 export default class ProductList extends Component {
+  constructor(props) {
+    super(props);
+
+    this.addCart = this.addCart.bind(this);
+  }
+
+  addCart({ target: { name } }) {
+    const { listProduct, listCat } = this.props;
+    const allProducts = listProduct || listCat;
+    const productCart = allProducts.find((product) => (
+      product.id === name
+    ));
+    /* const productQuant = [productCart, 1]; */
+    const atualProduct = localStorage.getItem('product')
+      ? JSON.parse(localStorage.getItem('product'))
+      : [];
+    localStorage.setItem('product', JSON.stringify([...atualProduct, productCart]));
+  }
+
   render() {
     const { listProduct, listCat } = this.props;
     const products = listProduct || listCat;
@@ -19,6 +38,14 @@ export default class ProductList extends Component {
                 />
               </Link>
               <p>{price}</p>
+              <button
+                type="button"
+                name={ id }
+                data-testid="product-add-to-cart"
+                onClick={ this.addCart }
+              >
+                Adicionar
+              </button>
             </div>
           )) : 'Nenhum produto foi encontrado'}
         </div>
