@@ -30,8 +30,8 @@ export default class ProductList extends Component {
         <div>
           {products.length ? products.map(({ price, title, thumbnail, id }) => (
             <div data-testid="product" key={ id }>
-              <h2>{title}</h2>
               <Link data-testid="product-detail-link" to={ `/product/${id}` }>
+                <h2>{title}</h2>
                 <img
                   src={ thumbnail }
                   alt={ title }

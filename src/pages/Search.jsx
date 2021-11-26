@@ -57,7 +57,7 @@ export default class Search extends Component {
             Digite algum termo de pesquisa ou escolha uma categoria.
           </h2>
           <Link data-testid="shopping-cart-button" to="/cart">
-            cart
+            carrinho
           </Link>
         </form>
         <div>
