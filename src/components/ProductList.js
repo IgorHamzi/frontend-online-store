@@ -15,11 +15,10 @@ export default class ProductList extends Component {
     const productCart = allProducts.find((product) => (
       product.id === name
     ));
-    /* const productQuant = [productCart, 1]; */
     const atualProduct = localStorage.getItem('product')
       ? JSON.parse(localStorage.getItem('product'))
       : [];
-    localStorage.setItem('product', JSON.stringify([...atualProduct, productCart]));
+    localStorage.setItem('product', JSON.stringify([...atualProduct, [productCart, 1]]));
   }
 
   render() {
