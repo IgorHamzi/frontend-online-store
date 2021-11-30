@@ -6,45 +6,84 @@ export default class Cart extends Component {
     super(props);
 
     this.state = {
-      listProduct: [],
+      qntItens: 0,
     };
 
-    this.saveState = this.saveState.bind(this);
+    this.increase = this.increase.bind(this);
+    this.decrease = this.decrease.bind(this);
   }
 
   componentDidMount() {
-    const { saveState } = this;
-    if (localStorage.getItem('product') !== null) {
-      const getProduct = JSON.parse(localStorage.getItem('product'));
-      saveState(getProduct);
-    }
+    this.countItems();
   }
 
-  saveState(getPro) {
-    this.setState({ listProduct: getPro });
+  countItems = () => {
+    const product = JSON.parse(localStorage.getItem('product'));
+    const totalItems = product
+      ? product.reduce((acumulador, item) => (acumulador + item[1]), 0)
+      : 0;
+    this.setState({
+      qntItens: totalItems,
+    });
+  }
+
+  increase = ({ target: { name } }) => {
+    const product = JSON.parse(localStorage.getItem('product'));
+    product[name][1] += 1;
+    localStorage.setItem('product', JSON.stringify(product));
+    this.countItems();
+  }
+
+  decrease = ({ target: { name } }) => {
+    const product = JSON.parse(localStorage.getItem('product'));
+    const totalItem = product[name][1];
+    product[name][1] = totalItem > 1
+      ? totalItem - 1
+      : totalItem;
+    localStorage.setItem('product', JSON.stringify(product));
+    this.countItems();
   }
 
   render() {
-    const { listProduct } = this.state;
+    const { qntItens } = this.state;
+    const listProduct = localStorage.getItem('product')
+      ? JSON.parse(localStorage.getItem('product'))
+      : false;
 
     return (
       <div>
         <Link to="/"><h3>Home</h3></Link>
         <p>
-          {`Itens: ${listProduct.length}` }
+          {listProduct ? `Itens: ${Number(qntItens)}` : 'Itens: 0' }
         </p>
-        {listProduct.length ? (
+        {listProduct ? (
           <div>
-            {listProduct.map((product) => (
-              <div key={ product.id }>
+            {listProduct.map((product, index) => (
+              <div key={ product[0].id }>
                 <h1 data-testid="shopping-cart-product-name">
-                  { product.title }
+                  { product[0].title }
                 </h1>
-                <img src={ product.thumbnail } alt={ product.title } />
-                <p>{ `R$${product.price}` }</p>
+                <img src={ product[0].thumbnail } alt={ product[0].title } />
+                <p>{ `R$${(product[0].price * product[1]).toFixed(2)}` }</p>
+                <button
+                  data-testid="product-increase-quantity"
+                  type="button"
+                  name={ index }
+                  onClick={ this.increase }
+                >
+                  +
+                </button>
                 <p data-testid="shopping-cart-product-quantity">
-                  1
+                  { product[1] }
                 </p>
+                <button
+                  data-testid="product-decrease-quantity"
+                  type="button"
+                  name={ index }
+                  onClick={ this.decrease }
+                >
+                  -
+                </button>
               </div>
             ))}
           </div>
