@@ -35,9 +35,8 @@ export default class Product extends Component {
       ? JSON.parse(localStorage.getItem('product'))
       : [];
     localStorage.setItem('product', JSON.stringify(
-      [...atualProduct, findProductDetails],
+      [...atualProduct, [findProductDetails, 1]],
     ));
-    console.log(findProductDetails);
   }
 
   render() {
